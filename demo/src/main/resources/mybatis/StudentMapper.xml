@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.StudentMapper" >
+     
+		<insert id="addstudent" parameterType="com.example.demo.entity.Student">
+		       insert into d_student values(#{stu_id},#{stu_name},#{stu_add_id},#{stu_cla_id},#{stu_gender})
+		</insert>
+		<select id="selectStudentById" parameterType="int" resultType="com.example.demo.entity.Student">
+		       select * from d_student where stu_id=#{id}
+		</select>
+		<delete id="deleteStudentById" parameterType="int">
+			   delete from d_student where stu_id=#{id}
+		</delete>
+		<update id="updateStudent" parameterType="com.example.demo.entity.Student">
+				update d_student set stu_add_id=#{stu_add_id} where stu_id=#{stu_id}
+		</update>
+		<select id="selectStudentByClassname" parameterType="String" resultType="com.example.demo.entity.Student">
+				select * from d_student where stu_cla_id=
+                (select cla_id from d_class where cla_name=#{classname})
+		</select>
+		<select id="selectStudentUseIf" parameterType="int" resultType="com.example.demo.entity.Student">
+				select * from d_student where stu_cla_id = cla_id and stu_add_id=add_id
+		</select>
+		<select id="selectStudentByMap" parameterType="map" resultType="com.example.demo.entity.Student">
+				select * from d_student where 1=1
+				<if test="name!=null"> and stu_name=#{name}</if>
+				<if test="gender!=null"> and stu_gender=#{gender}</if>
+				<if test="classid!=null"> and stu_cla_id=#{classid}</if>
+				<if test="addressid!=null"> and stu_add_id=#{addressid}</if>
+		</select>
+</mapper>
